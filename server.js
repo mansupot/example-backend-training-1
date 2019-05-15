@@ -12,10 +12,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const connection = mysql.createConnection({
   // host: "localhost",
-  host: "128.199.70.49",
-  user: "root",
-  password: "P@ssw0rd",
-  database: "react_training"
+  host: "",
+  user: "",
+  password: "",
+  database: ""
 });
 
 connection.connect(function(err) {
