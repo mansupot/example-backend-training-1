@@ -2,20 +2,29 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const mysql = require("mysql");
+const multer = require("multer");
 
 const app = express();
 const port = 5000;
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now() + ".jpg");
+  }
+});
+const upload = multer({ storage: storage });
 
 app.use(cors());
 app.use(bodyParser.json({ limit: "20mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const connection = mysql.createConnection({
-  // host: "localhost",
-  host: "",
-  user: "",
-  password: "",
-  database: ""
+  host: "localhost",
+  user: "root",
+  password: "P@ssw0rd",
+  database: "react_training"
 });
 
 connection.connect(function(err) {
@@ -188,4 +197,14 @@ app.post("/post/student/delete", (req, res) => {
     if (error) throw error;
     res.send({ message: "Delete Success" });
   });
+});
+
+app.post("/uploadfile", upload.single("profile"), (req, res) => {
+  const file = req.file;
+  if (!file) {
+    const error = new Error("Please upload a file");
+    error.httpStatusCode = 400;
+    res.send(error);
+  }
+  res.send(file);
 });
