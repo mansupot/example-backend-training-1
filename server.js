@@ -208,3 +208,8 @@ app.post("/uploadfile", upload.single("profile"), (req, res) => {
   }
   res.send(file);
 });
+
+app.get("/get/photos/:photo_name", function(req, res) {
+  let photo_name = req.params.photo_name;
+  res.sendFile(__dirname + "/uploads/" + photo_name);
+});
